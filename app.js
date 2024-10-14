@@ -5,6 +5,9 @@ const dotenv = require("dotenv");
 dotenv.config();
 const port = process.env.PORT;
 
+const Product = require("./models/product"); // Import model Product
+const dummyData = require("./models/dummy"); // Import data dummy
+
 //body parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -25,6 +28,13 @@ mongoose
   .connect(process.env.DATABASE)
   .then(() => {
     console.log("Database Connected");
+    Product.insertMany(dummyData)
+      .then(() => {
+        console.log("Data inserted successfully!");
+      })
+      .catch((error) => {
+        console.log("Error inserting data:", error);
+      });
   })
   .catch((error) => {
     console.log("Database Connection Error:", error);
